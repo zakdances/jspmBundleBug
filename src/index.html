@@ -1,0 +1,43 @@
+<!doctype html>
+
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+
+  <title>JSPM Bundle Bug</title>
+
+  <script src="jspm_packages/system.js"></script>
+  <script src="jspm.browser.js"></script>
+  <script src="jspm.config.js"></script>
+
+</head>
+
+<body>
+	<div id='content'></div>
+	<h3>(If you see BOTH "app.js" and "build.js" being requested, then something is very wrong.)</h3>
+  
+	<script>
+		window.document.requestsMade = [];
+
+		var oldXHR = window.XMLHttpRequest;
+
+		function newXHR() {
+		    var realXHR = new oldXHR();
+		    realXHR.addEventListener("readystatechange", function() {
+			    var status = realXHR.status;
+			    console.log(status);
+		        if(realXHR.readyState==4 && (status==200 || status==304)){
+
+		            console.log(realXHR);
+		            window.document.requestsMade.push(realXHR);
+		        }
+		    }, false);
+		    return realXHR;
+		}
+		window.XMLHttpRequest = newXHR;
+
+		SystemJS.import('app.ts');
+	</script>
+  
+</body>
+</html>
