@@ -7,3 +7,5 @@ To run test, clone repo, then:
 2) jspm install
 
 3) npm run dev
+
+![Alt text](http://i.imgur.com/fCwJgUP.png "Optional title")
